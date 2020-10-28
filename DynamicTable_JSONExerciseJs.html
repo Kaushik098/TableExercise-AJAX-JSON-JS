@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DynamicTable_JSON</title>
+
+    <style>
+        #myTableData{
+            border-collapse: collapse;
+        }
+        table, th, td{
+            border : 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <button type="button" onclick="loadDoc()">Request data</button>
+    
+     <script>
+
+          function loadDoc(){
+              var x = new XMLHttpRequest();
+              x.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                     var val = JSON.parse(this.responseText);    // Converting JSON String to Object
+                  //   console.log(val);
+                     var arr = Object.values(val);               // Converting Object to Array for traversal
+                     var arr1 = arr[1];
+                  //   console.log(arr1);
+
+                     const table = document.createElement("Table");   // Table Element Creation
+                     var tr, td;
+
+                    arr1.forEach((item, index) => {
+                    var a = Object.values(item);
+                    //console.log(a);
+                    tr = document.createElement("tr");                //Row Element Creation
+                    for(var i=0; i<a.length; i++){
+                        td = document.createElement("td");            //Column Element Creation
+                        td.append(a[i]);
+                        tr.appendChild(td);
+                    }
+                    table.appendChild(tr);
+                  });
+                 document.body.appendChild(table);
+                 }
+              };    
+              x.open("GET", "http://dummy.restapiexample.com/api/v1/employees");  //AJAX Call open method using GET 
+              x.send();
+          }  
+            
+     </script>  
+</body>
+</html>
